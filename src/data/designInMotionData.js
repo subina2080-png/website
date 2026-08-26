@@ -1,0 +1,58 @@
+export const motionPortfolioItems = [
+  {
+    id: 'motion-1',
+    title: 'Serene Asana Flow',
+    category: 'Vinyasa Movement',
+    imageURL: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=800&q=80',
+    aspectRatio: '4/5',
+  },
+  {
+    id: 'motion-2',
+    title: 'Chakra Alignment',
+    category: 'Energy & Meditation',
+    imageURL: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80',
+    aspectRatio: '16/9',
+  },
+  {
+    id: 'motion-3',
+    title: 'Golden Hour Harmony',
+    category: 'Outdoor Practice',
+    imageURL: 'https://images.unsplash.com/photo-1510894347713-fc3ed6fdf539?auto=format&fit=crop&w=800&q=80',
+    aspectRatio: '3/4',
+  },
+  {
+    id: 'motion-4',
+    title: 'Pranayama Rhythm',
+    category: 'Breath Control',
+    imageURL: 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?auto=format&fit=crop&w=800&q=80',
+    aspectRatio: '1/1',
+  },
+  {
+    id: 'motion-5',
+    title: 'Sound Bath Vibrations',
+    category: 'Auditory Healing',
+    imageURL: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80',
+    aspectRatio: '4/3',
+  },
+  {
+    id: 'motion-6',
+    title: 'Mindful Sanctuary',
+    category: 'Space Design',
+    imageURL: 'https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&w=800&q=80',
+    aspectRatio: '4/5',
+  },
+  {
+    id: 'motion-7',
+    title: 'Flowstate Motion',
+    category: 'Dynamic Choreography',
+    imageURL: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?auto=format&fit=crop&w=800&q=80',
+    aspectRatio: '16/9',
+  },
+  {
+    id: 'motion-8',
+    title: 'Zen Balance',
+    category: 'Holistic Wellness',
+    imageURL: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80',
+    aspectRatio: '3/4',
+  },
+];
