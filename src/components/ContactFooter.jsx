@@ -81,8 +81,8 @@ export default function ContactFooter({ showToast }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', marginBottom: '2.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', color: '#E4ECE4' }}>
                 <Globe color="var(--color-terracotta-400)" size={20} />
-                <a href="https://subinaaacharya.com.np" target="_blank" rel="noopener noreferrer" style={{ color: '#FFFFFF', textDecoration: 'none', fontWeight: 700 }}>
-                  subinaaacharya.com.np
+                <a href="https://subinaacharya.com.np" target="_blank" rel="noopener noreferrer" style={{ color: '#FFFFFF', textDecoration: 'none', fontWeight: 700 }}>
+                  subinaacharya.com.np
                 </a>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', color: '#E4ECE4' }}>
@@ -207,8 +207,8 @@ export default function ContactFooter({ showToast }) {
 
         <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', fontSize: '0.88rem', color: '#9EB097' }}>
           <div>© {new Date().getFullYear()} Subina Aacharya Sanctuary. All rights reserved.</div>
-          <a href="https://subinaaacharya.com.np" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-terracotta-400)', textDecoration: 'none', fontWeight: 700 }}>
-            subinaaacharya.com.np
+          <a href="https://subinaacharya.com.np" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-terracotta-400)', textDecoration: 'none', fontWeight: 700 }}>
+            subinaacharya.com.np
           </a>
         </div>
       </div>
