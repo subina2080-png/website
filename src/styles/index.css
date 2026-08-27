@@ -238,11 +238,16 @@ img {
   line-height: 1;
 }
 
-/* Scroll Reveal Animations */
+/* Scroll Reveal Animations - Default visible so site is never blank */
 .scroll-reveal {
-  opacity: 0;
-  transform: translateY(30px);
+  opacity: 1;
+  transform: translateY(0);
   transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.js-loaded .scroll-reveal:not(.active) {
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .scroll-reveal.active {

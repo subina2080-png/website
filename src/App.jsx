@@ -38,6 +38,18 @@ export default function App() {
   }, [bookmarkedIds]);
 
   useEffect(() => {
+    document.body.classList.add('js-loaded');
+    const revealElements = document.querySelectorAll('.scroll-reveal');
+    
+    const makeAllActive = () => {
+      revealElements.forEach((el) => el.classList.add('active'));
+    };
+
+    if (typeof IntersectionObserver === 'undefined') {
+      makeAllActive();
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -46,13 +58,16 @@ export default function App() {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.05 }
     );
 
-    const revealElements = document.querySelectorAll('.scroll-reveal');
     revealElements.forEach((el) => observer.observe(el));
+    const fallbackTimer = setTimeout(makeAllActive, 800);
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallbackTimer);
+    };
   }, []);
 
   const toggleBookmark = (id) => {
