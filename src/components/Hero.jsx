@@ -8,11 +8,13 @@ export default function Hero({ onExploreSubscription }) {
     e.preventDefault();
     if (!email) return;
 
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 }
-    });
+    try {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    } catch (err) {}
 
     if (onExploreSubscription) {
       onExploreSubscription();

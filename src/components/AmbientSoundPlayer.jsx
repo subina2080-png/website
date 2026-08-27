@@ -26,7 +26,8 @@ export default function AmbientSoundPlayer({ isOpen, onClose }) {
     }
 
     try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      const AudioCtx = typeof window !== 'undefined' ? (window.AudioContext || window.webkitAudioContext) : null;
+      if (!AudioCtx) return;
       if (!audioCtxRef.current) {
         audioCtxRef.current = new AudioCtx();
       }

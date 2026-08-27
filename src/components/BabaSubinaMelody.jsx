@@ -26,14 +26,19 @@ export default function BabaSubinaMelody() {
 
   // Web Audio Context initialization
   const getAudioContext = () => {
-    if (!audioCtxRef.current) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      audioCtxRef.current = new AudioCtx();
+    try {
+      if (!audioCtxRef.current) {
+        const AudioCtx = typeof window !== 'undefined' ? (window.AudioContext || window.webkitAudioContext) : null;
+        if (!AudioCtx) return null;
+        audioCtxRef.current = new AudioCtx();
+      }
+      if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
+        audioCtxRef.current.resume();
+      }
+      return audioCtxRef.current;
+    } catch (e) {
+      return null;
     }
-    if (audioCtxRef.current.state === 'suspended') {
-      audioCtxRef.current.resume();
-    }
-    return audioCtxRef.current;
   };
 
   // Pure Acoustic Handpan Tone (Zero Echo, Zero Delay, 100% Direct Dry Output)

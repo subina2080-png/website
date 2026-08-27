@@ -13,7 +13,7 @@ export default function ScheduleSection({ showToast }) {
     }
 
     setReservedIds([...reservedIds, id]);
-    confetti({ particleCount: 60, spread: 60, origin: { y: 0.7 } });
+    try { confetti({ particleCount: 60, spread: 60, origin: { y: 0.7 } }); } catch (err) {}
     showToast(`Spot reserved for ${title}! Zoom link sent.`);
   };
 

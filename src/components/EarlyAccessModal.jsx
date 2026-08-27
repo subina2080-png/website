@@ -10,7 +10,7 @@ export default function EarlyAccessModal({ tier, onClose, showToast }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
-    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    try { confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); } catch (err) {}
     showToast(`You're on the waitlist for the ${tier.name}!`);
   };
 

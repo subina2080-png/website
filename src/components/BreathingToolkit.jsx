@@ -48,7 +48,8 @@ export default function BreathingToolkit({ showToast }) {
   const playChime = (freq = 528) => {
     if (!soundEnabled) return;
     try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      const AudioCtx = typeof window !== 'undefined' ? (window.AudioContext || window.webkitAudioContext) : null;
+      if (!AudioCtx) return;
       if (!audioCtxRef.current) {
         audioCtxRef.current = new AudioCtx();
       }

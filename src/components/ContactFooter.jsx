@@ -9,14 +9,14 @@ export default function ContactFooter({ showToast }) {
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     if (!newsletterEmail) return;
-    confetti({ particleCount: 70, spread: 60, origin: { y: 0.8 } });
+    try { confetti({ particleCount: 70, spread: 60, origin: { y: 0.8 } }); } catch (err) {}
     showToast("Subscribed! Welcome to Subina's weekly Mindful Letters.");
     setNewsletterEmail('');
   };
 
   const handleContactSubmit = (e) => {
     e.preventDefault();
-    confetti({ particleCount: 80, spread: 70, origin: { y: 0.7 } });
+    try { confetti({ particleCount: 80, spread: 70, origin: { y: 0.7 } }); } catch (err) {}
     showToast("Thank you! Your message has been sent to Subina.");
     setContactForm({ name: '', email: '', subject: 'General Query', message: '' });
   };
