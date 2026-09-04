@@ -23,6 +23,15 @@ export default function Navbar({ activeSection, setActiveSection, bookmarkedCoun
     { id: 'hero', label: 'Home', icon: Compass },
     { id: 'blogs', label: 'Journal', icon: BookOpen },
     { id: 'breathing', label: 'Breathwork', icon: HeartPulse },
+    { id: 'schedule', label: 'Classes', icon: Calendar },
+    { id: 'about', label: 'About', icon: User },
+    { id: 'contact', label: 'Contact', icon: Mail }
+  ];
+
+  const allNavLinks = [
+    { id: 'hero', label: 'Home', icon: Compass },
+    { id: 'blogs', label: 'Journal', icon: BookOpen },
+    { id: 'breathing', label: 'Breathwork', icon: HeartPulse },
     { id: 'poses', label: 'Asana', icon: Sparkles },
     { id: 'subscription', label: 'Membership', icon: ShieldCheck },
     { id: 'schedule', label: 'Classes', icon: Calendar },
@@ -124,24 +133,25 @@ export default function Navbar({ activeSection, setActiveSection, bookmarkedCoun
             <div className="grey-brand-icon">
               🧘‍♀️
             </div>
-            <span style={{ color: 'var(--color-sage-900)', fontWeight: 700, fontSize: '0.88rem', letterSpacing: '-0.01em' }}>
+            <span className="grey-brand-text">
               Subina
             </span>
           </div>
 
           {/* Desktop Nav Links (Balanced Center Navigation) */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }} className="desktop-grey-nav">
+          <nav style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }} className="desktop-grey-nav">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = activeSection === link.id;
+              const isContact = link.id === 'contact';
               return (
                 <button
                   key={link.id}
                   onClick={() => scrollTo(link.id)}
-                  className={`grey-nav-item ${isActive ? 'active' : ''}`}
+                  className={`grey-nav-item ${isActive ? 'active' : ''} ${isContact ? 'grey-contact-cta' : ''}`}
                   title={link.label}
                 >
-                  <Icon size={16} />
+                  <Icon size={18} />
                   <span className="nav-label">{link.label}</span>
                 </button>
               );
@@ -149,7 +159,7 @@ export default function Navbar({ activeSection, setActiveSection, bookmarkedCoun
           </nav>
 
           {/* Action Triggers (Right) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
 
             {/* Ambient Audio Generator Button */}
             <button
@@ -157,7 +167,7 @@ export default function Navbar({ activeSection, setActiveSection, bookmarkedCoun
               className="grey-nav-item grey-action-item"
               title="Ambient Zen Audio Generator"
             >
-              <Volume2 size={16} color="var(--color-terracotta-600)" />
+              <Volume2 size={18} color="var(--color-terracotta-600)" />
               <span className="nav-label">Zen Audio</span>
             </button>
 
@@ -168,7 +178,7 @@ export default function Navbar({ activeSection, setActiveSection, bookmarkedCoun
               title="Saved Bookmarks"
               style={{ position: 'relative' }}
             >
-              <Bookmark size={16} color="var(--color-sage-900)" />
+              <Bookmark size={18} color="var(--color-sage-900)" />
               <span className="nav-label">Saved ({bookmarkedCount})</span>
               {bookmarkedCount > 0 && !activeSection.includes('blogs') && (
                 <span
@@ -236,7 +246,7 @@ export default function Navbar({ activeSection, setActiveSection, bookmarkedCoun
               animation: 'fadeIn 0.2s ease-out'
             }}
           >
-            {navLinks.map((link) => {
+            {allNavLinks.map((link) => {
               const Icon = link.icon;
               const isActive = activeSection === link.id;
               return (
