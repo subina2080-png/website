@@ -21,8 +21,9 @@ function blogSeo() {
 
       for (const p of posts) {
         const url = `${SITE}/blog/${p.id}`
-        const ld = { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: p.title, description: p.excerpt, image: p.coverImage, datePublished: p.date, author: { '@type': 'Person', name: p.author }, mainEntityOfPage: url }
-        const head = `<title>${esc(p.title)} | Subina Aacharya</title>\n    <meta name="description" content="${esc(p.excerpt)}" />\n    <link rel="canonical" href="${url}" />\n    <meta property="og:type" content="article" />\n    <meta property="og:title" content="${esc(p.title)}" />\n    <meta property="og:description" content="${esc(p.excerpt)}" />\n    <meta property="og:image" content="${esc(p.coverImage)}" />\n    <meta property="og:url" content="${url}" />\n    <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>`
+        const img = p.coverImage.startsWith('/') ? SITE + p.coverImage : p.coverImage
+        const ld = { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: p.title, description: p.excerpt, image: img, datePublished: p.date, author: { '@type': 'Person', name: p.author }, mainEntityOfPage: url }
+        const head = `<title>${esc(p.title)} | Subina Aacharya</title>\n    <meta name="description" content="${esc(p.excerpt)}" />\n    <link rel="canonical" href="${url}" />\n    <meta property="og:type" content="article" />\n    <meta property="og:title" content="${esc(p.title)}" />\n    <meta property="og:description" content="${esc(p.excerpt)}" />\n    <meta property="og:image" content="${esc(img)}" />\n    <meta property="og:url" content="${url}" />\n    <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>`
         let html = template
           .replace(/<title>[\s\S]*?<\/title>/, '')
           .replace(/<meta name="description"[^>]*>/, '')
