@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BLOG_POSTS } from '../data/yogaData';
-import { X, Bookmark, Share2, Clock, Calendar, User, ArrowLeft, Type, Check } from 'lucide-react';
+import { Bookmark, Share2, Clock, Calendar, User, ArrowLeft, Type, Check } from 'lucide-react';
 
-export default function BlogDetailModal({ post, onClose, onSelectPost, isBookmarked, toggleBookmark, showToast }) {
+export default function BlogPostPage({ post, onClose, onSelectPost, isBookmarked, toggleBookmark, showToast }) {
   const [fontSize, setFontSize] = useState(1.05);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'auto' }); }, [post.id]);
 
   if (!post) return null;
 
@@ -15,21 +17,27 @@ export default function BlogDetailModal({ post, onClose, onSelectPost, isBookmar
     setTimeout(() => setCopied(false), 3000);
   };
 
+  // Internal links like "/#breathing" go back to the home page and scroll to that section
+  const handleBodyClick = (e) => {
+    const a = e.target.closest('a');
+    const href = a && a.getAttribute('href');
+    if (href && href.startsWith('/#')) {
+      e.preventDefault();
+      window.dispatchEvent(new CustomEvent('navigate-home', { detail: { id: href.slice(2) } }));
+    }
+  };
+
   const relatedPosts = BLOG_POSTS
     .filter(p => p.id !== post.id && (p.category === post.category || p.tags.some(t => post.tags.includes(t))))
     .slice(0, 2);
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ padding: 0 }}>
+    <main className="blog-post-page" style={{ background: '#FFFFFF', minHeight: '100vh', padding: '7rem 1.25rem 7rem' }}>
+      <article style={{ maxWidth: '900px', margin: '0 auto' }}>
         <div 
           style={{
-            position: 'sticky',
-            top: 0,
-            zIndex: 10,
-            background: 'rgba(255, 255, 255, 0.94)',
-            backdropFilter: 'blur(10px)',
-            padding: '1rem 1.5rem',
+            padding: '0 0 1rem',
+            marginBottom: '1.5rem',
             borderBottom: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
@@ -37,7 +45,7 @@ export default function BlogDetailModal({ post, onClose, onSelectPost, isBookmar
           }}
         >
           <button onClick={onClose} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem', color: 'var(--color-sage-900)', fontWeight: 600 }}>
-            <ArrowLeft size={18} /> Back to Library
+            <ArrowLeft size={18} /> Back to Journal
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -68,20 +76,17 @@ export default function BlogDetailModal({ post, onClose, onSelectPost, isBookmar
               {copied ? <Check size={18} color="green" /> : <Share2 size={18} />}
             </button>
 
-            <button onClick={onClose} style={{ padding: '0.45rem', borderRadius: '50%', background: 'var(--color-sand-100)', color: 'var(--color-sage-900)' }}>
-              <X size={20} />
-            </button>
           </div>
         </div>
 
-        <div style={{ position: 'relative', width: '100%', height: '350px' }}>
-          <img src={post.coverImage} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+        <div style={{ position: 'relative', width: '100%', height: 'clamp(220px, 42vw, 420px)' }}>
+          <img src={post.coverImage} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', borderRadius: 'var(--radius-lg)' }} />
           <div style={{ position: 'absolute', bottom: '1rem', left: '1.5rem', background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(8px)', padding: '0.35rem 1rem', borderRadius: 'var(--radius-full)', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-sage-900)' }}>
             {post.category}
           </div>
         </div>
 
-        <div style={{ padding: '2.5rem 2rem', maxWidth: '740px', margin: '0 auto' }}>
+        <div style={{ padding: '2.5rem 0 0', maxWidth: '740px', margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.85rem', color: 'var(--color-text-light)', marginBottom: '1rem' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><User size={15} /> {post.author}</span>
             <span>•</span>
@@ -95,6 +100,7 @@ export default function BlogDetailModal({ post, onClose, onSelectPost, isBookmar
 
           <div 
             className="article-body"
+            onClick={handleBodyClick}
             style={{ fontSize: `${fontSize}rem`, lineHeight: 1.8, color: 'var(--color-text-main)' }}
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
@@ -125,7 +131,7 @@ export default function BlogDetailModal({ post, onClose, onSelectPost, isBookmar
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </article>
+    </main>
   );
 }

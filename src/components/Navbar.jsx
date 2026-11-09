@@ -48,6 +48,9 @@ export default function Navbar({ activeSection, setActiveSection, bookmarkedCoun
       const yOffset = -24;
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
+    } else {
+      // On an article page: return to the home page first, then scroll to the section
+      window.dispatchEvent(new CustomEvent('navigate-home', { detail: { id } }));
     }
   };
 
