@@ -14,10 +14,30 @@ import BabaSubinaMelody from './components/BabaSubinaMelody';
 import ContactFooter from './components/ContactFooter';
 import EarlyAccessModal from './components/EarlyAccessModal';
 import Toast from './components/Toast';
+import { BLOG_POSTS } from './data/yogaData';
+
+const postFromPath = (path) => {
+  const m = path.match(/^\/blog\/([^/]+)\/?$/);
+  return m ? BLOG_POSTS.find((p) => p.id === m[1]) || null : null;
+};
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
-  const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPost, setSelectedPostState] = useState(() => postFromPath(window.location.pathname));
+
+  // Keep the address bar in sync so each article has its own shareable URL (/blog/<id>)
+  const setSelectedPost = (post) => {
+    setSelectedPostState(post);
+    try {
+      window.history.pushState({}, '', post ? `/blog/${post.id}` : '/');
+    } catch (e) { }
+  };
+
+  useEffect(() => {
+    const onPop = () => setSelectedPostState(postFromPath(window.location.pathname));
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
   const [soundModalOpen, setSoundModalOpen] = useState(false);
   const [waitlistTier, setWaitlistTier] = useState(null);
   const [toasts, setToasts] = useState([]);

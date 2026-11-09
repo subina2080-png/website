@@ -29,73 +29,16 @@ export const BLOG_CATEGORIES = [
   "Beginner Guides"
 ];
 
-export const BLOG_POSTS = [
-  {
-    id: "mindful-flow-breath",
-    title: "The Art of Mindful Flow: Uniting Breath and Movement",
-    category: "Vinyasa Flow",
-    excerpt: "Discover how synchronizing Ujjayi breath with fluid body movements transforms a simple physical exercise into a moving meditation.",
-    readTime: "6 min read",
-    date: "Aug 18, 2026",
-    author: "Subina Aacharya",
-    featured: true,
-    coverImage: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=1200&q=80",
-    tags: ["Vinyasa", "Ujjayi Breath", "Mindfulness", "Flow State"],
-    content: `
-      <p class="lead">In our fast-paced modern world, we often move through our days detached from the rhythm of our breathing. Vinyasa yoga offers a sacred remedy: the conscious marriage of motion and breath.</p>
-      <h3>Why Breath is the Anchor of Vinyasa</h3>
-      <p>The word <em>Vinyasa</em> translates from Sanskrit as "to place in a special way." When we move from Downward Dog to Plank, or sweep our arms upward in Sun Salutation, the movement is not led by muscle power alone—it is birthed by the initiation of breath.</p>
-      <blockquote>"When your breath is erratic, your thoughts flutter like leaves in a breeze. When your breath is steady, your mind rests in serene stillness."</blockquote>
-      <h3>Key Principles of Breath Synchronization</h3>
-      <ul>
-        <li><strong>Inhalations expand:</strong> Use your inhalations to lengthen the spine, open the heart, and lift upwards (e.g., Cobra, Upward Dog, High Lunge).</li>
-        <li><strong>Exhalations release:</strong> Use your exhalations to fold forward, twist deeper, and ground down into the earth (e.g., Uttanasana, Seated Twists).</li>
-        <li><strong>The Ujjayi Technique:</strong> Slightly constrict the back of the throat to create an ocean-wave sound. This retains internal heat and keeps the mind present.</li>
-      </ul>
-      <h3>A 5-Minute Daily Flow Practice</h3>
-      <p>Start each morning with 5 slow Sun Salutations. Notice how after just 3 rounds, your heart rate settles, your mind calms, and an inner warmth revitalizes your spirit.</p>
-    `
-  },
-  {
-    id: "pranayama-anxiety-relief",
-    title: "Pranayama for Daily Anxiety Relief: A Beginner's Guide",
-    category: "Pranayama & Breathwork",
-    excerpt: "Learn 3 powerful ancient breathing techniques to calm your nervous system in less than 4 minutes whenever stress strikes.",
-    readTime: "5 min read",
-    date: "Aug 12, 2026",
-    author: "Subina Aacharya",
-    featured: false,
-    coverImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80",
-    tags: ["Pranayama", "Stress Relief", "Nervous System", "Calm"],
-    content: `<p>Your breath is the direct remote control to your autonomic nervous system. By consciously altering the duration and depth of your inhalation and exhalation, you can instantly shift from a stress-induced state into calm parasympathetic rest.</p>`
-  },
-  {
-    id: "anahata-heart-chakra",
-    title: "Unlocking Anahata: Opening the Heart Chakra for Emotional Freedom",
-    category: "Chakra Healing",
-    excerpt: "Release past emotional blockages and cultivate unconditional compassion through heart-opening poses, green herbal teas, and mantras.",
-    readTime: "7 min read",
-    date: "Aug 05, 2026",
-    author: "Subina Aacharya",
-    featured: false,
-    coverImage: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=80",
-    tags: ["Anahata", "Chakra", "Heart Opener", "Emotional Wellness"],
-    content: `<p>Located at the center of the chest, the Anahata (Heart) Chakra is the bridge between our physical root energy and spiritual awareness.</p>`
-  },
-  {
-    id: "sacred-home-yoga-sanctuary",
-    title: "Designing a Sacred Home Yoga Sanctuary on a Budget",
-    category: "Mindful Living",
-    excerpt: "Transform a small corner of your living room or bedroom into a peaceful zen haven with natural elements, soft lighting, and minimal noise.",
-    readTime: "4 min read",
-    date: "Jul 28, 2026",
-    author: "Subina Aacharya",
-    featured: false,
-    coverImage: "https://images.unsplash.com/photo-1510894347713-fc3ed6fdf539?auto=format&fit=crop&w=1200&q=80",
-    tags: ["Home Sanctuary", "Interior Zen", "Mindful Space", "Minimalism"],
-    content: `<p>You don’t need an expansive studio to cultivate a serene practice space. All you need is 6x3 feet of space free from digital clutter and imbued with gentle intention.</p>`
-  }
-];
+const formatPostDate = (iso) =>
+  new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric', timeZone: 'UTC' });
+
+// Every article is a JSON file in src/content/posts/. Add a file = add an article.
+const postModules = import.meta.glob('../content/posts/*.json', { eager: true });
+
+export const BLOG_POSTS = Object.values(postModules)
+  .map((m) => m.default ?? m)
+  .sort((a, b) => b.date.localeCompare(a.date))
+  .map((post) => ({ ...post, dateISO: post.date, date: formatPostDate(post.date) }));
 
 export const YOGA_POSES = [
   {
