@@ -3,7 +3,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import BlogSection from './components/BlogSection';
 import DesignInMotion from './components/DesignInMotion';
-import BlogDetailModal from './components/BlogDetailModal';
+import BlogPostPage from './components/BlogPostPage';
 import BreathingToolkit from './components/BreathingToolkit';
 import AmbientSoundPlayer from './components/AmbientSoundPlayer';
 import PoseLibrary from './components/PoseLibrary';
@@ -32,6 +32,27 @@ export default function App() {
       window.history.pushState({}, '', post ? `/blog/${post.id}` : '/');
     } catch (e) { }
   };
+
+  // Browser tab title follows the open article
+  useEffect(() => {
+    const home = 'Subina Aacharya | Yoga, Mindfulness & Peaceful Living Sanctuary';
+    document.title = selectedPost ? `${selectedPost.title} | Subina Aacharya` : home;
+  }, [selectedPost]);
+
+  // Leave an article page and scroll to a home-page section (used by Navbar and in-article links)
+  useEffect(() => {
+    const onNavigateHome = (e) => {
+      setSelectedPost(null);
+      const id = e.detail?.id;
+      setTimeout(() => {
+        const el = id && document.getElementById(id);
+        if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 24, behavior: 'smooth' });
+        else window.scrollTo({ top: 0 });
+      }, 120);
+    };
+    window.addEventListener('navigate-home', onNavigateHome);
+    return () => window.removeEventListener('navigate-home', onNavigateHome);
+  }, []);
 
   useEffect(() => {
     const onPop = () => setSelectedPostState(postFromPath(window.location.pathname));
@@ -127,6 +148,19 @@ export default function App() {
         toggleSoundModal={() => setSoundModalOpen(true)}
       />
 
+      {selectedPost ? (
+        <>
+          <BlogPostPage
+            post={selectedPost}
+            onClose={() => window.dispatchEvent(new CustomEvent('navigate-home', { detail: { id: 'blogs' } }))}
+            onSelectPost={(p) => setSelectedPost(p)}
+            isBookmarked={bookmarkedIds.includes(selectedPost.id)}
+            toggleBookmark={toggleBookmark}
+            showToast={showToast}
+          />
+          <ContactFooter showToast={showToast} />
+        </>
+      ) : (
       <main>
         <div className="scroll-reveal active">
           <Hero
@@ -172,16 +206,6 @@ export default function App() {
           <BabaSubinaMelody showToast={showToast} />
         </div>
       </main>
-
-      {selectedPost && (
-        <BlogDetailModal
-          post={selectedPost}
-          onClose={() => setSelectedPost(null)}
-          onSelectPost={(p) => setSelectedPost(p)}
-          isBookmarked={bookmarkedIds.includes(selectedPost.id)}
-          toggleBookmark={toggleBookmark}
-          showToast={showToast}
-        />
       )}
 
       <AmbientSoundPlayer
