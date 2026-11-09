@@ -1,0 +1,47 @@
+name: Weekly blog draft
+
+# Every Monday: generate one article draft and open a Pull Request.
+# Nothing goes live until you review and MERGE the PR (merge = deploy via deploy.yml).
+on:
+  schedule:
+    - cron: '0 4 * * 1'   # Monday 04:00 UTC (09:45 Nepal time)
+  workflow_dispatch:       # lets you run it manually from the Actions tab
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate article draft
+        id: gen
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/generate-post.mjs
+
+      - name: Validate articles
+        run: node scripts/validate-posts.mjs
+
+      - name: Open Pull Request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POST_ID: ${{ steps.gen.outputs.id }}
+          POST_TITLE: ${{ steps.gen.outputs.title }}
+        run: |
+          BRANCH="draft/$POST_ID"
+          git config user.name "blog-bot"
+          git config user.email "blog-bot@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add src/content/posts
+          git commit -m "draft: $POST_TITLE"
+          git push origin "$BRANCH"
+          gh pr create --base main --head "$BRANCH" \
+            --title "Draft: $POST_TITLE" \
+            --body "Automatic article draft. Review the text (accuracy, tone), edit the JSON file if needed, then **merge to publish**. Close the PR to reject."
